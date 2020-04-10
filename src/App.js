@@ -5,11 +5,11 @@ import api from './services/api';
 import "./styles.css";
 
 function App() {
-  const [projects, setProjects] = useState([]);
+  const [repositories, setRepositories] = useState([]);
 
   useEffect(() => {
     api.get('repositories').then(response => {
-      setProjects(response.data)
+      setRepositories(response.data)
     })
   }, [])
 
@@ -21,10 +21,10 @@ function App() {
         techs: ["React", "Node.js"],
         }
       );
-      const project = response.data;
-      setProjects([
-        ...projects,
-        project
+      const repository = response.data;
+      setRepositories([
+        ...repositories,
+        repository
       ])
     } catch (error) {}
   }
@@ -32,16 +32,16 @@ function App() {
   async function handleRemoveRepository(id) {
     try {
       await api.delete(`repositories/${id}`);
-      setProjects([
-        ...projects.filter(project => project.id !== id)
-      ])
+      setRepositories(
+        repositories.filter(repository => repository.id !== id)
+      )
     } catch (error) {}
   }
 
   return (
     <div>
       <ul data-testid="repository-list">
-        {projects.map(({id, title}) => (
+        {repositories.map(({id, title}) => (
         <li key={id}>
           {title}
           <button onClick={() => handleRemoveRepository(id)}>
